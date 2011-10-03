@@ -1,0 +1,41 @@
+package com.example.tests
+
+import com.thoughtworks.selenium.*
+
+class InformaMi-groovy extends GroovySeleneseTestCase {
+
+    @Override
+    void setUp() throws Exception {
+        super.setUp('http://kefacciamo.appspot.com/events/index', '*chrome')
+        setDefaultTimeout(30000)
+        setCaptureScreenshotOnFailure(false)
+    }
+
+    void testInformaMi-groovy() throws Exception {
+        selenium.open("/events/index")
+        selenium.clickAndWait("css=img[alt=\"Login with facebook\"]")
+        assertTrue(selenium.isTextPresent("Maurizio Pozzobon"))
+        verifyTrue(selenium.isTextPresent("Crea evento"))
+        verifyTrue(selenium.isTextPresent("Crea locale"))
+        selenium.clickAndWait("//div[@id='sidebar']/ul/li[2]/div/ul/li[2]/a/span")
+        selenium.click("name=nome")
+        selenium.type("name=nome", "Selenium Car")
+        selenium.type("name=nome", "Selenium Locale")
+        selenium.type("name=descrizione", "Descrizione di un locale creato tramite selenium")
+        selenium.type("id=indirizzo", "udine, viale venezia")
+        selenium.clickAndWait("css=input[type=\"submit\"]")
+        selenium.clickAndWait("//ul[@id='navigation']/li[2]/a/span")
+        verifyEquals("Selenium Locale", selenium.getText("link=Selenium Locale"))
+        verifyTrue(selenium.isTextPresent("Tetris"))
+        selenium.clickAndWait("link=Selenium Locale")
+        verifyEquals("Selenium Locale", selenium.getText("link=Selenium Locale"))
+        verifyTrue(selenium.isTextPresent("Descrizione di un locale creato tramite selenium"))
+        verifyTrue(selenium.isTextPresent("udine, viale venezia"))
+        selenium.clickAndWait("//ul[@id='navigation']/li[2]/a/span")
+        selenium.type("name=address", "udine")
+        selenium.clickAndWait("css=form > input[type=\"submit\"]")
+        verifyEquals("Selenium Locale", selenium.getText("link=Selenium Locale"))
+        verifyFalse(selenium.isTextPresent("Tetris"))
+        selenium.clickAndWait("//ul[@id='navigation']/li[4]/a/span")
+    }
+}

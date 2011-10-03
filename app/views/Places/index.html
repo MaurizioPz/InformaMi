@@ -1,0 +1,39 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+
+#{list items:places, as:'place'}
+<div class="post" id="xnews-${place.id}">
+
+	<h2 class="title">
+		<a href="@{Places.show(place.id)}">${place.nome}</a>
+	</h2>
+
+
+	<div class="post-info">
+		<p class="author alignleft">
+			Created by <a href="@{Application.profile(place.user.id)}">${place.user?.nome}</a>
+		</p>
+  		<div class="votes alignright">
+    		<span class="votenumber" id="xvotes-${place.id}">${place.points}</span>
+
+		    <div class="vote-box" id="xvote-${place.id}">
+	        	<a href="@{Places.vote(place.id,true,false)}" class="vote up"><span>Vota</span></a>
+	    	  	<a  id="xreport-${place.id}" href="@{Places.vote(place.id,false,false)}" class="vote down"><span>Sotterra</span></a>
+	        </div>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<div class="post-content clearfix">
+		#{if place.descrizione.size()<100}
+		<p>${place.descrizione}</p>
+		#{/if}
+		#{else}
+		<p>${place.descrizione.substring(0,100)}...</p>
+		#{/else}                                                        
+		<a href="@{Places.show(place.id)}">&raquo; Leggi tutto</a>
+	</div>
+	
+</div>
+#{/list}

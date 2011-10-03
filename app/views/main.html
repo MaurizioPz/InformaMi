@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>#{get 'title' /}</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/style.css'}">
+		<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/color-green.css'}">
+		<link rel="stylesheet/less" type="text/css" href="@{'/public/stylesheets/main.less'}">
+		<link type="text/css" href="@{'/public/stylesheets/jquery-ui-1.8.13.custom.css'}" rel="Stylesheet" />
+		
+		<link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+			
+    	<script src="http://lesscss.googlecode.com/files/less-1.1.3.min.js" type="text/javascript"></script>
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		
+		<script src="@{'public/javascripts/jquery.mystique.js'}" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="@{'public/javascripts/jquery-ui-1.8.13.custom.min.js'}"></script>
+		<script src="@{'public/javascripts/jquery.tagcloud-2.js'}" type="text/javascript" charset="utf-8"></script>
+		<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js" charset="utf-8"></script>
+	</head>
+	<body class="home col-2-right fluid">
+		<div id="page">
+			<!-- header -->
+		    <div class="page-content header-wrapper">
+		      <div id="header" class="bubbleTrigger">
+		        <div id="site-title" class="clearfix">
+		          <h1 id="logo"><a href="@{Application.index()}">InformaMi</a></h1>
+		
+		          <p class="headline">dove trovare gli eventi migliori</p>
+		        </div>
+		
+		        <div class="shadow-left">
+		          <div class="shadow-right clearfix">
+		            <p class="nav-extra"><a href="http://twitter.com/mauriziopz" class="nav-extra twitter" title="Follow me on Twitter"><span>Follow me on Twitter</span></a><a href="#" class="nav-extra rss" title="RSS Feeds"><span>RSS Feeds</span></a></p>
+		
+		            <!-- main navi -->
+		            <ul id="navigation" class="clearfix">
+		              <li class="active home"><a class="home active fadeThis" href="@{Application.index()}"><span class="title">Home</span></a></li>
+		              <li>
+		                <a class="fadeThis" href="@{Places.index()}"><span class="title">Locali</span></a>
+		              </li>
+		              #{if user}
+		              <li>
+		                <a class="fadeThis" href="@{Application.profile(user.id)}"><span class="title">Profilo</span></a>
+		              </li>
+              
+		              <li><a class="fadeThis" href="@{Application.doLogout()}"><span class="title">Log out</span></a></li>
+		               #{/if}
+		              
+		            </ul>
+		            <!-- /main navi -->
+		
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+		    <!-- /header -->
+		    <!-- left+right bottom shadow -->
+		    <div class="shadow-left page-content main-wrapper">
+		      <div class="shadow-right">
+			    <!-- main content: primary + sidebar(s) -->
+		        <div id="main">
+		        	<div id="main-inside" class="clearfix">
+        	           <!-- primary content -->
+			           <div id="primary-content">
+			             <div class="blocks">
+		        			#{doLayout /}
+			             </div>
+			           </div>
+			           <!-- /primary content -->
+			           
+						#{include 'sidebar.html' /}
+						
+					</div>
+	        	</div>
+	        	<!-- /main content -->
+		
+				<div id="error">
+					${flash.error}
+				</div>
+				<!-- footer -->
+		        <div id="footer">
+		          <div class="page-content">
+		            <div id="copyright">
+		              Mystique theme by <a href="http://digitalnature.ro">digitalnature</a><br />
+		              <a class="rss-subscribe" href="#" title="RSS Feeds">RSS Feeds</a> <a class="valid-xhtml" href="http://validator.w3.org/check?uri=referer" title="Valid XHTML">XHTML 1.1</a> <a id="goTop" class="js-link" name="goTop">Top</a> <!--[if lte IE 6]> <script type="text/javascript"> isIE6 = true; isIE = true; </script> <![endif]-->
+		               <!--[if gte IE 7]> <script type="text/javascript"> isIE = true; </script> <![endif]-->
+		            </div>
+		          </div>
+		        </div>
+		        <!-- /footer -->
+		         </div>
+		    </div>
+		    <!-- /shadow -->
+		
+		    <!-- page controls -->
+		    <div id="pageControls"></div>
+		    <!-- /page controls -->
+      	</div>
+  		<!-- /page -->
+	</body>
+</html>

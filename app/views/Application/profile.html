@@ -1,0 +1,69 @@
+#{extends 'main.html' /}
+#{set title: 'Profilo di ' + userProfile.nome/}
+<!-- profile -->
+<div class="post clearfix">
+	<h1 class="title">${userProfile.nome}</h1>
+	
+	
+	<div class="post-content clearfix">
+		<div style="float:left; width:65%;margin:1%;">
+			<div>
+				<h2>Ultimi eventi pubblicati</h2>
+				<ul>
+				#{list items:events, as:'event'}
+				<li><a href="@{Events.show(event.id)}">${event.nome}</a> </li>
+				#{/list}
+				</ul>
+			</div>
+			<div>
+				<h2>Ultimi locali pubblicati</h2>
+				<ul>
+				#{list items:places, as:'place'}
+				<li><a href="@{Places.show(place.id)}">${place.nome}</a> </li>
+				#{/list}
+				</ul>
+			</div> 
+			<div>
+				<h2>Ultimi commenti ad eventi</h2>
+				<ul>
+				#{list items:eventComments, as:'eComment'}
+				<li>${eComment.testo} - <a href="@{Events.show(eComment.event?.id)}">${eComment.event?.nome}</a> </li>
+				#{/list}
+				</ul>
+			</div> 
+			<div>
+				<h2>Ultimi commenti a locali</h2>
+				<ul>
+				#{list items:placeComments, as:'pComment'}
+				<li>${pComment.testo} - <a href="@{Places.show(pComment.place?.id)}">${pComment.place?.nome}</a></li> 
+				#{/list}
+				</ul>
+			</div>  
+			<div>
+				<h2>Ultime azioni</h2>
+				<ul>
+				#{list items:actions, as:'action'}
+				<li><a href="${action.URL}">${action.toString()}</a></li> 
+				#{/list}
+				</ul>
+			</div>
+			<div>
+				<h2>Foto in cui compare</h2>
+				#{list items:presences, as:'presence'}
+						<a href="@{Photos.show(presence.photo.id)}" style="padding: 10px;"><img src="${presence.photo.imageLinks.get('small_square').asString()}"></a>
+				#{/list}
+			</div>
+						
+		</div>
+		<div style="float:right; margin:1%;width:30%">
+			<img alt="foto ${userProfile?.nome}" src="http://graph.facebook.com/${userProfile?.webId}/picture?type=large" style="width:100%"><br>
+			#{ifnot user.equals(userProfile)}#{if isFriend}<a href="@{Application.removeFriend(userProfile.id)}">Rimuovi dai tuoi amici</a>#{/if}#{else}<a href="@{Application.addFriend(userProfile.id)}">Aggiungi ai tuoi amici</a>#{/else}#{/ifnot}<br>
+			Medaglie:#{list items:medals, as:'medal'} ${medal} #{/list}
+		</div>
+	</div>
+	
+	
+</div>
+<!-- /profile -->
+
+    

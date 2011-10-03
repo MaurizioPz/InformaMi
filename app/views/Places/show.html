@@ -1,0 +1,103 @@
+#{extends 'main.html' /}
+#{set title: place.nome + ' a ' + place.indirizzo/}
+#{set action: @Places.addComment()/}   
+#{set id: place.id/}
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+
+<script type="text/javascript">
+  $(document).ready(function () {
+	  initialize();
+	});
+  
+	var geocoder;
+	var map;
+	
+	function initialize() {
+	  geocoder = new google.maps.Geocoder();
+	  var latlng = new google.maps.LatLng(-34.397, 150.644);
+	  var myOptions = {
+	    zoom: 8,
+	    center: latlng,
+	    mapTypeId: google.maps.MapTypeId.ROADMAP
+	  }
+	  map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	  codeAddress('${place.indirizzo}');
+	}
+	
+	function codeAddress(address) {
+	  geocoder.geocode( { 'address': address}, function(results, status) {
+	    if (status == google.maps.GeocoderStatus.OK) {
+	      map.setCenter(results[0].geometry.location);
+	      map.fitBounds(results[0].geometry.bounds);
+	      var marker = new google.maps.Marker();
+	      marker.setMap(map);
+	      marker.setPosition(results[0].geometry.location);
+	      $('#map_canvas').show();
+	    } else {
+	    }
+	  });
+	}
+</script> 
+    <!-- place -->
+<div class="post clearfix">
+	<a class="post-thumb alignleft" href="#"><img width="64" height="64" src="${place.imageLinks.get('small_square').asString()}" alt="thumb test" /></a>
+	<h2 class="title"><a href="#" rel="bookmark">${place.nome}</a></h2>
+	<div class="post-date">
+		<p class="day"></p>
+	</div>
+	<div class="post-info clearfix with-thumbs">
+		<p class="author alignleft">Posted by <a href="@{Application.profile(place.user.id)}">${place.user?.nome}</a></p>
+		<div class="votes alignright">
+			<span class="votenumber" id="xvotes-0">${votes} </span>
+			<div class="vote-box" id="xvote-0">
+				<a href="@{Places.vote(place.id,true,true)}" class="vote up"><span>Vota</span></a>
+				<a id="xreport-0" href="@{Places.vote(place.id,false,true)}" class="vote down"><span>Sotterra</span></a>
+			</div>
+		</div>	
+	</div>
+	  
+	
+	<div class="post-content clearfix">
+		<p style="float:left; width:65%;margin:1%;"> ${place.descrizione}</p>
+		<div style="float:right; margin:1%;width:30%">
+			<img alt="foto locale ${place.nome}" src="${place.imageLinks.get('large_thumbnail').asString()}" style="width:100%">
+		</div>
+	</div>
+	<div class="post-content clearfix">
+		<p> ${place.indirizzo}</p>
+	</div>
+	<div id="map_canvas" style="height: 300px;"></div>
+	
+	
+</div>
+<!-- /place -->
+
+<!-- tabbed content -->
+<div class="tabbed-content post-tabs clearfix" id="post-tabs">
+	<!-- tab navigation (items must be in reverse order because of the tab-design) -->
+	<div class="tabs-wrap clearfix">
+		<ul class="tabs">
+		    <li class="comments"><a href="#section-comments"><span>Commenti (${comments.size()})</span></a></li>
+	  	</ul>
+	</div>
+	<!-- /tab nav -->
+	
+	<!-- tab sections -->
+	<div class="sections">
+	
+		<!-- comments -->
+			#{include 'comments.html' /}
+		<!-- /comments -->
+		
+		<!-- trackbacks -->
+		<div class="section" id="section-trackbacks">
+			<h6 class="title">No trackbacks yet.</h6>
+		</div>
+		<!-- /trackbacks -->
+	</div>
+	<!-- /tab sections -->
+</div>
+<!-- /tabbed content -->
+
+    

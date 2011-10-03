@@ -1,0 +1,29 @@
+<!-- Indices written at Mon, 3 Oct 2011 16:51:26 CEST -->
+
+<datastore-indexes>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Event" ancestor="false" source="auto">
+        <property name="user" direction="asc"/>
+        <property name="__key__" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Place" ancestor="false" source="auto">
+        <property name="user" direction="asc"/>
+        <property name="__key__" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="EventComment" ancestor="false" source="auto">
+        <property name="user" direction="asc"/>
+        <property name="data" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="PlaceComment" ancestor="false" source="auto">
+        <property name="user" direction="asc"/>
+        <property name="data" direction="desc"/>
+    </datastore-index>
+
+</datastore-indexes>

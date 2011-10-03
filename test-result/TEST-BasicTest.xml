@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<testsuite failures="2" time="4.733" errors="0" skipped="0" tests="3" name="BasicTest">
+  <testcase classname="BasicTest" name="createUser" time="0.022">
+      </testcase>
+  <testcase classname="BasicTest" name="testGeocode" time="0.227">
+      </testcase>
+  <testcase classname="BasicTest" name="createPlace" time="4.422">
+      </testcase>
+  <testcase classname="BasicTest" name="createEvent" time="0.042">
+                  <failure type="" message="Failure, expected:&lt;1&gt; but was:&lt;0&gt;">
+        <![CDATA[
+          In /test/BasicTest.java, line 133
+          
+              			assertEquals(1, 0); :
+          
+        ]]>
+        </failure>
+        }
+                  </testcase>
+  <testcase classname="BasicTest" name="commentTest" time="0.02">
+                  <failure type="" message="Failure, expected:&lt;1&gt; but was:&lt;0&gt;">
+        <![CDATA[
+          In /test/BasicTest.java, line 162
+          
+              			assertEquals(1, 0); :
+          
+        ]]>
+        </failure>
+        }
+                  </testcase>
+</testsuite>

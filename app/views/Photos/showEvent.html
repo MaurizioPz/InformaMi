@@ -1,0 +1,17 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<h1><a href="@{Events.show(event.id)}">${event.nome}</a></h1>
+
+#{list items:photos, as:'photo'}
+		<a href="@{Photos.show(photo.id)}" style="padding: 10px;"><img src="${photo.imageLinks.get('small_square').asString()}"></a>
+#{/list}
+<br><br><br>
+
+<h3>Aggiungi altre foto all'evento</h3>
+#{form @Photos.save(), enctype:'multipart/form-data'}
+	<label>Immagine</label>
+	<input type="file" name="photo">
+	<input type="hidden" name="eventId" value="${event.id}">
+	<input type="submit" value="Carica">
+#{/form}

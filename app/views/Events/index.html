@@ -1,0 +1,42 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+
+#{list items:events, as:'event'}
+<div class="post" id="xnews-${event.id}">
+	<a class="post-thumb alignleft" href="@{Events.show(event.id)}"><img width="64" height="64" alt="thumb test" src="${event.imageLinks.get('small_square').asString()}" /></a>
+	<h2 class="title">
+		<a href="@{Events.show(event.id)}">${event.nome}</a>
+	</h2>
+
+	<div class="post-date">
+		<p> ${event.dataInizio.since()}</p>
+	</div>
+
+	<div class="post-info clearfix with-thumbs">
+		<p class="author alignleft">
+			Posted by <a href="@{Application.profile(event.user.id)}">${event.user?.nome}</a>
+		</p>
+  		<div class="votes alignright">
+    		<span class="votenumber" id="xvotes-${event.id}">${event.points}</span>
+
+		    <div class="vote-box" id="xvote-${event.id}">
+	        	<a href="@{Events.vote(event.id,true,false)}" class="vote up"><span>Vota</span></a>
+	    	  	<a  id="xreport-${event.id}" href="@{Events.vote(event.id,false,false)}" class="vote down"><span>Sotterra</span></a>
+	        </div>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<div class="post-content clearfix">
+		#{if event.descrizione.size()<100}
+		<p>${event.descrizione}</p>
+		#{/if} 
+		#{else}
+		<p>${event.descrizione.substring(0,100)}...</p>
+		#{/else}                                                         
+		<a href="@{Events.show(event.id)}">&raquo; Leggi tutto</a>
+	</div>
+	
+</div>
+#{/list}

@@ -1,0 +1,25 @@
+#{set title: 'Foto dell\'evento ' + photo.event.nome/}
+#{extends 'main.html' /}
+<script type="text/javascript">
+    var showUserAction = #{jsAction @Photos.addPresence(':idPhoto',':x',':y')/}
+    function point_it(event){
+    	pos_x = event.offsetX?(event.offsetX):event.pageX-document.getElementById("image").offsetLeft;
+    	pos_y = event.offsetY?(event.offsetY):event.pageY-document.getElementById("image").offsetTop;
+		var url = showUserAction({idPhoto: '${photo.id}',x:pos_x,y:pos_y});
+    	 jQuery.get(url,function() {
+             alert('Tag effettuato');
+         });
+    }
+</script> 
+<div >
+
+	<img id="image" src="${photo.imageLinks.get('large_thumbnail').asString()}" style="display: block; margin:auto;" onclick="point_it(event)">
+	
+	<h3 >clicca la foto per taggarti in quel punto</h3>
+	#{if presences.size()}<p> in questa foto sono presenti: #{list items:presences, as:'presence'} <a href="@{Application.profile(presence.user.id)}">${presence.user?.nome}</a> #{/list}</p>#{/if}
+ 
+</div>
+
+
+
+    

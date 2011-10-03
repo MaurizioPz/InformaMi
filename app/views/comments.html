@@ -1,0 +1,39 @@
+		<div class="section clearfix" id="section-comments">
+			<div id="comments-wrap">
+				<div class="clearfix">
+				<ul id="comments" class="comments">
+					#{list items:comments, as:'comment'}
+						<!-- comment entry -->
+						<li class="comment byuser bypostauthor depth-1 withAvatars" id="comment-349">
+							<div class="comment-head comment byuser bypostauthor depth-1 withAvatars">
+								<div class="avatar-box"><img alt="avatar" src="http://graph.facebook.com/${comment.user?.webId}/picture" class="avatar" height='48' width='48' /></div>
+								<div class="author">
+									<span class="by"> written by <a class="comment-author" id="comment-author-349" href="@{Application.profile(comment.user?.id)}" rel="nofollow" name="comment-author-349">${comment.user?.nome}</a></span><br />
+									${comment.data.since()}
+								</div>
+								<div class="controls bubble">
+								</div>
+							</div>
+							<div class="comment-body clearfix" id="comment-body-349">
+								<div class="comment-text">
+									<p>${comment.testo}</p>
+								</div>
+								<a id="comment-reply-349" name="comment-reply-349"></a>
+							</div>
+						</li>
+						<!-- /comment entry -->
+					#{/list}
+				</ul>
+				</div>
+			</div>
+		
+		<!-- comment form -->
+		<div class="comment-form clearfix" id="respond">
+			#{form action}
+				<input type="hidden" name="Id" value="#{get 'id' /}"/>
+				<textarea name="comment" rows="5"></textarea>
+				<input type="submit" value="Aggiungi commento"/>
+			#{/form}
+		</div>
+		<!-- /comment form -->
+		</div>

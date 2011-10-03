@@ -1,0 +1,84 @@
+#{extends 'main.html' /}
+#{set title:'Crea locale: '/}
+   
+<script type="text/javascript">
+<!--
+YUI().use('autocomplete', 'autocomplete-highlighters', function (Y) {
+	 
+	  // Add the yui3-skin-sam class to the body so the default
+	  // AutoComplete widget skin will be applied.
+	  Y.one('body').addClass('yui3-skin-sam');
+	 
+	  // The following examples demonstrate some of the different
+	  // result sources AutoComplete supports. You only need to
+	  // pick one, you don't need them all. Assume the '#ac-input'
+	  // element id used in this example refers to an <input>
+	  // element on the page.
+	 
+	  // XHR URL source (no callback). Leave the {query} placeholder
+	  // as is; AutoComplete will replace it automatically.
+	  Y.one('#place').plug(Y.Plugin.AutoComplete, {
+	    resultHighlighter: 'phraseMatch',
+	    resultTextLocator: function (result) {
+	        return result.nome+':' + result.indirizzo;
+	      },
+	    source: '@{Places.getPlaces()}'+'?search={query}'
+	  });
+	  Y.one('#tags').plug(Y.Plugin.AutoComplete, {
+		    resultHighlighter: 'phraseMatch',
+		    queryDelimiter: ',',
+		    resultTextLocator: function (result) {
+		        return result.nome;
+		      },
+		    source: '@{Tags.getTags()}'+'?search={query}'
+		  });
+	 
+	});
+	$(document).ready(function () {
+		$('#dataInizio').datepicker({dateFormat:'dd/mm/yy'});
+		$('#dataFine').datepicker({dateFormat:'dd/mm/yy'});
+	});
+
+//-->
+</script>
+    
+#{form @Events.save(), enctype:'multipart/form-data'}
+    
+        <h3>Nome</h3>
+        <input type="text" class="text" name="nome" />
+    
+        <h3>Descrizione</h3> 
+        <textarea class="text" name="descrizione"></textarea>
+    
+        <h3>Locale</h3>
+        <input type="text" class="text" name="placeDesc" id="place" value="${id}"/>
+    
+
+        <span class="wrapper">
+        	<span class="cell">
+	        	<h3>Data inizio</h3>
+	        	<input type="text" name="dataInizio" id="dataInizio"/>
+			</span>
+			<span class="cell">
+	        	<h3>Data fine</h3>
+	        	<input type="text" name="dataFine" id="dataFine"/>
+	        </span>
+        </span>
+
+    
+        <h3 style="display: none">È ricorrente?</h3>
+        <input style="display: none" type="checkbox"" name="isRicorrente"/>
+    
+        <h3 style="display: none">Ogni quanto?</h3>
+        <input style="display: none" type="text" class="text" name="ricorrenza"/>
+    
+        <h3>Carica una immagine</h3>
+        <input type="file" class="text" name="immagine"/>
+    
+        <h3>Tags</h3>
+        <input type="text" class="text" name="tags" id="tags"/>
+    
+    <p>
+        <input type="submit" value="Aggiungi evento" />
+    </p>
+#{/form}

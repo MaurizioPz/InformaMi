@@ -1,0 +1,118 @@
+#{set action: @Events.addComment()/}   
+#{set id: event.id/} 
+#{set title: event.nome + ' a ' + event.place?.indirizzo/}
+#{extends 'main.html' /}
+ 
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+
+  <script type="text/javascript">
+  $(document).ready(function () {
+	  initialize();
+	});
+  
+	var geocoder;
+	var map;
+	
+	function initialize() {
+	  geocoder = new google.maps.Geocoder();
+	  var latlng = new google.maps.LatLng(-34.397, 150.644);
+	  var myOptions = {
+	    zoom: 8,
+	    center: latlng,
+	    mapTypeId: google.maps.MapTypeId.ROADMAP
+	  }
+	  map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	  codeAddress('${event.place?.indirizzo}');
+	}
+	
+	function codeAddress(address) {
+	  geocoder.geocode( { 'address': address}, function(results, status) {
+	    if (status == google.maps.GeocoderStatus.OK) {
+	      map.setCenter(results[0].geometry.location);
+	      map.fitBounds(results[0].geometry.bounds);
+	      var marker = new google.maps.Marker();
+	      marker.setMap(map);
+	      marker.setPosition(results[0].geometry.location);
+	      $('#map_canvas').show();
+	    } else {
+	    }
+	  });
+	}
+</script> 
+
+
+ 
+
+
+<!-- post -->
+<div class="post clearfix">
+	<a class="post-thumb alignleft" href="#"><img width="64" height="64" src="${event.imageLinks.get('small_square').asString()}" alt="thumb test" /></a>
+	<h2 class="title"><a href="#" rel="bookmark">${event.nome}</a></h2>
+	<div class="post-date">
+		<p class="day">${event.dataInizio.since()}</p>
+	</div>
+	<div class="post-info clearfix with-thumbs">
+		<p class="author alignleft">Posted by <a href="@{Application.profile(event.user.id)}">${event.user.nome}</a></p>
+		<div class="votes alignright">
+			<span class="votenumber" id="xvotes-0">${votes} </span>
+			<div class="vote-box" id="xvote-0">
+				<a href="@{Events.vote(event.id,true,true)}" class="vote up"><span>Vota</span></a>
+				<a id="xreport-0" href="@{Events.vote(event.id,false,true)}" class="vote down"><span>Sotterra</span></a>
+			</div>
+		</div>	
+	</div>
+	  
+	
+	<div class="post-content clearfix">
+		<p style="float:left;width:65%;margin:1%;"> ${event.descrizione}</p>
+		<div style="float:right; margin:1%;width:30%">
+			<img alt="foto evento ${event.nome}" src="${event.imageLinks.get('large_thumbnail').asString()}" style="width:100%"><br/>
+			<a href="@{Photos.showEvent(event.id)}" class="button"><span>Altre foto</span></a>
+		</div>
+	</div>
+	<div class="post-content clearfix">
+		<h3>Indirizzo</h3>
+		<p> ${event.place?.indirizzo}</p>
+	</div>
+	
+	<div id="map_canvas" style="height: 300px;"></div>
+	
+	<div class="post-tags">
+	#{list items:tags, as:'tag'}
+		<a href="@{Tags.getByTag(tag.nome)}">${tag.nome}</a>
+	#{/list}
+	</div>
+</div>
+<!-- /post -->
+
+<!-- tabbed content -->
+<div class="tabbed-content post-tabs clearfix" id="post-tabs">
+	<!-- tab navigation (items must be in reverse order because of the tab-design) -->
+	<div class="tabs-wrap clearfix">
+		<ul class="tabs">
+		    <li class="comments"><a href="#section-comments"><span>Comments (${comments.size()})</span></a></li>
+	  	</ul>
+	</div>
+	<!-- /tab nav -->
+	
+	<!-- tab sections -->
+	<div class="sections">
+	
+		<!-- comments -->
+			#{include 'comments.html' /}
+		<!-- /comments -->
+		
+		<!-- trackbacks -->
+		<div class="section" id="section-trackbacks">
+			<h6 class="title">No trackbacks yet.</h6>
+		</div>
+		<!-- /trackbacks -->
+	</div>
+	<!-- /tab sections -->
+</div>
+<!-- /tabbed content -->
+
+
+
+    

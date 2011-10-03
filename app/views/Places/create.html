@@ -1,0 +1,61 @@
+#{extends 'main.html' /}
+#{set title:'Crea evento: '/}
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+<script type="text/javascript"> 
+  jQuery(document).ready(function () {
+	  initialize();
+	});
+
+  var geocoder;
+  var map;
+  var marker = new google.maps.Marker();
+  function initialize() {
+    geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(-34.397, 150.644);
+    var myOptions = {
+      zoom: 8,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    codeAddress('Trieste');
+  }
+ 
+  function codeAddress(address) {
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        map.fitBounds(results[0].geometry.bounds);
+        marker.setMap(map);
+        marker.setPosition(results[0].geometry.location);
+        $('#map_canvas').show();
+      } else {
+      }
+    });
+  }
+</script> 
+
+    
+#{form @Places.save(), enctype:'multipart/form-data'}
+    <p>
+        <h3>Titolo</h3>
+        <input type="text" class="text" name="nome" />
+    </p>
+    <p>
+        <h3>Descrizione</h3> 
+        <textarea name="descrizione" class="text"></textarea>
+    </p>
+    <p>
+        <h3>Indirizzo</h3>
+        <input type="text" name="indirizzo" id="indirizzo" class="text" onchange="codeAddress(document.getElementById('indirizzo').value);"></input>
+    </p>
+          <div id="map_canvas" style="height: 300px; width: 90%;"></div> 
+    <p>
+        <h3>Carica una immagine</h3>
+        <input type="file" name="immagine" class="text"></input>
+    </p>
+    <p>
+        <input type="submit" value="Aggiungi Locale" />
+    </p>
+#{/form}

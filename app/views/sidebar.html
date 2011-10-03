@@ -1,0 +1,121 @@
+            <!-- sidebar -->
+            <div id="sidebar">
+
+              <ul class="blocks">
+
+                <!-- search form -->
+                <li class="block">
+                  <div class="search-form">
+                    <form method="get" id="searchform" action="@{Application.search()}" class="clearfix" name="searchform">
+                      <fieldset>
+                        <div id="searchfield">
+                          <input type="text" name="s" id="searchbox" class="text clearField #{if s}clearFieldActive#{/if}" value="#{ifnot s}Search#{/ifnot}#{else}${s}#{/else}" />
+                        </div><input type="submit" value="" class="submit" />
+                      </fieldset>
+                    </form>
+                  </div>
+                </li>
+                <!-- /search form -->
+
+               
+               
+                
+                #{ifnot user} 
+                <!-- login -->
+                <li class="block">
+                  <div class="block-login clearfix">
+                    <h3 class="title"><span>Login utente</span></h3>
+                    <div class="block-div"></div>
+                    <div class="block-div-arrow"></div>
+															
+										<a href="${lib.Facebook.getLoginRedirectURL()}"><img src="@{'public/images/facebook_login.gif'}" alt="Login with facebook"/></a>
+								
+                  </div>
+                </li>
+                <!-- /login -->
+                #{/ifnot}
+                #{if user}
+                <!-- logged in -->
+                <li class="block">
+                  <div class="block-login clearfix">
+                    <h3 class="title"><span>${user.nome}</span></h3>
+                    <div class="block-div"></div>
+                    <div class="block-div-arrow"></div>
+                    <ul>
+                    <li><a href="@{Events.create()}" class="button"><span>Crea evento</span></a></li>
+                    <li><a href="@{Places.create()}" class="button"><span>Crea locale</span></a></li>
+                    </ul>
+                  </div>
+                </li>
+                <!-- /logged in -->
+                	%{
+                		List<models.Action> actios = user.getFriendsActions();
+                		List<models.Action> actions = new ArrayList<models.Action>();
+					    	for (models.Action action : actios) {
+						    	if(action!=null){
+									action.actionType = models.TipoAzione.findById(action.actionType.id);
+									action.user = models.User.findById(action.user.id);
+									actions.add(action);
+								}                
+							}	
+					}%
+	                #{if actions.size()}
+	                	<ul>
+           				#{list items:actions, as:'action'}
+           				<li><a href="${action.URL}">${action}</a></li>
+           				#{/list}
+           				</ul>
+	              	#{/if}
+                #{/if}
+                               
+                <li class="block">
+                  <div class="block-login clearfix">
+                    <h3 class="title"><span>Vicino a...</span></h3>
+                    <div class="block-div"></div>
+                    <div class="block-div-arrow"></div>
+                    <ul>
+	                    <form action="#{if actionVicino}${actionVicino}#{/if}#{else}@{Application.index()}#{/else}">
+		                    <input type="text" value="${address}" name="address" style="min-width: 150px;width:60%;">
+		                    <input type="submit" value="Cerca">
+	                    </form>
+                    </ul>
+                  </div>
+                </li>
+                  
+                #{if tagcloud}
+                <script type="text/javascript">
+				jQuery(document).ready(function() {
+					var tags = [
+					#{list tagcloud, as:'tag'}
+					{tag: "${tag.nome}", count: ${tag.idEvents.size()},href:"@{Tags.getByTag(tag.nome)}"},
+					#{/list}
+					{tag:" ",count:0}
+					];
+				jQuery("#tagcloud").tagCloud(tags);
+				});
+				</script>
+                <!-- tagcloud -->
+                <li class="block">
+                  <div class="block-login clearfix" style="word-spacing: 1em;line-height: 3em;">
+                    <h3 class="title"><span>Tag cloud</span></h3>
+                    <div class="block-div"></div>
+                    <div class="block-div-arrow"></div>
+					<div id="tagcloud">
+						<ul>
+						#{list tagcloud, as:'tag'}
+							<li>
+								<a href="@{Tags.getByTag(tag.nome)}">${tag.nome}</a>
+							</li>
+						#{/list}
+						</ul>
+					</div>										
+								
+                  </div>
+                </li>
+                <!-- /tagcloud -->
+                #{/if}
+
+              </ul>
+
+            </div>
+            <!-- sidebar -->
